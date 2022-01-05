@@ -1,35 +1,37 @@
 /* Global Variables */
-const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=94040&appid=';
-const apiKey = '315358e97288e02ffe61a64132d5aa2f&units=imperial';
+const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
+const apiKey = '&appid=315358e97288e02ffe61a64132d5aa2f&units=imperial';
 
 // post data when button is clicked
 const btn = document.querySelector("#generate");
-
-// change color of button while hovering.
-btn.onmouseover = () =>{
-    
-}
 
 btn.onclick = () => {
     // change the text on btn while getting the data from the url.
     btn.innerHTML = "Loading...";
 
-    // getting the data from api.
-    fetch(baseUrl + apiKey)
-    .then((response) => response.json())
-    .then((data) =>{
-        postData('/weatherData', data);
-    })
-    .then(async (response) =>{
-        const data = await getData();
-        return data;
-    })
-    .then(async (data) =>{
-        updateUI(data)
-    })
-    .catch ((error) =>{ 
-        console.log(error);
-    });
+    // get teh zip code from the user
+    const input = document.querySelector("#zip").value;
+    
+    if (input !== '') {
+        // getting the data from api.
+        fetch(baseUrl + input + apiKey)
+        .then((response) => response.json())
+        .then((data) =>{
+            postData('/weatherData', data);
+        })
+        .then(async (response) =>{
+            const data = await getData();
+            return data;
+        })
+        .then(async (data) =>{
+            updateUI(data)
+        })
+        .catch ((error) =>{ 
+            console.log(error);
+        });
+    } else {
+        alert("Please, enter the zip code.");
+    }
 }
 
 // get function 
